@@ -1,0 +1,3 @@
+# ignore the generated outputs (the binary and the txt files)
+*.out
+*.txt
