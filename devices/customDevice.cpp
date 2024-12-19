@@ -12,3 +12,4 @@ string CustomDevice::getDeviceNameWithCount() const {
   return devName;
 }
 int CustomDevice::getInstanceCount() const { return deviceCount; }
+int CustomDevice::getDeviceId() const { return deviceID; }

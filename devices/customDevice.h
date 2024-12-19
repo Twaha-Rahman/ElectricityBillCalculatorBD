@@ -16,6 +16,7 @@ public:
   string getDeviceName() const;
   string getDeviceNameWithCount() const;
   int getInstanceCount() const;
+  int getDeviceId() const;
 };
 
 #endif

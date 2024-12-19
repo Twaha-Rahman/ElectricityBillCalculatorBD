@@ -108,7 +108,7 @@ public:
 
   double getTotalBill() const { return totalCost; }
 
-  void displayBillInfo() {
+  void displayBillInfo(int *instanceCount) {
     // Print the device-by-device breakdown
     cout << "\nElectricity Consumption Breakdown:\n";
     for (const auto &device : elecDevices) {
@@ -133,6 +133,7 @@ public:
     string line = string(static_cast<int>(130), '-');
     cout << line << endl;
 
+    int i = 1;
     for (const auto &device : elecDevices) {
       double consumption = device->getConsumption();
       double percentage = (consumption / unitUsed) * 100;
@@ -141,14 +142,22 @@ public:
 
       string deviceName;
 
-      // if (device->getInstanceCount() == -1) {
-      //   deviceName = device->getDeviceName();
-      // } else {
-      //   device->getDeviceNameWithCount();
-      // }
+      if (device->getDeviceId() == -1) {
+        deviceName = device->getDeviceName();
+      } else {
+        int insCount = instanceCount[device->getDeviceId()];
+        if (insCount > 1) {
+          deviceName = device->getDeviceName() + " " +
+                       to_string(device->getInstanceCount());
+        } else {
+          deviceName = device->getDeviceName();
+        }
+      }
 
-      cout << setw(15) << device->getDeviceName() << ": " << setw(10) << fixed
+      cout << setw(15) << deviceName << ": " << setw(10) << fixed
            << setprecision(2) << percentage << "% " << bar << endl;
+
+      i++;
     }
 
     flush(cout);
@@ -261,7 +270,7 @@ int main() {
       billCalc.calcUsedUnit();
       billCalc.calcBill();
 
-      billCalc.displayBillInfo();
+      billCalc.displayBillInfo(instanceCount);
     } else if (choice == noOfDevices + 2) {
       // Save bill to file
       cout << "Enter filename to save the bill: ";

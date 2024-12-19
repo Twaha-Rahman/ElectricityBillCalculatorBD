@@ -36,5 +36,6 @@ string ElectricDevice::getDeviceName() const {
 }
 
 int ElectricDevice::getInstanceCount() const { return -1; }
+int ElectricDevice::getDeviceId() const { return -1; }
 
 double ElectricDevice::getConsumption() const { return calculateConsumption(); }

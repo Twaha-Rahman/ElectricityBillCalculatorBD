@@ -24,6 +24,7 @@ public:
   void saveDetails(ofstream &outFile) const;
   virtual string getDeviceName() const;
   virtual int getInstanceCount() const;
+  virtual int getDeviceId() const;
   double getConsumption() const;
 };
 
