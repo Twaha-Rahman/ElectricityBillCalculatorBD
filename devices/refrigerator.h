@@ -1,7 +1,7 @@
 #if !defined(REFRIGERATOR_H)
 #define REFRIGERATOR_H
 
-#include "../electricDevices.h"
+#include "electricDevices.h"
 
 // Derived class for a specific type of device
 class Refrigerator : public ElectricDevice {

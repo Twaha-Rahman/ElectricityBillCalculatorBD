@@ -23,6 +23,7 @@ public:
   void printDetails() const;
   void saveDetails(ofstream &outFile) const;
   virtual string getDeviceName() const;
+  virtual int getInstanceCount() const;
   double getConsumption() const;
 };
 

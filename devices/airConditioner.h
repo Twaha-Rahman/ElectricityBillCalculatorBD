@@ -1,7 +1,7 @@
 #if !defined(AIRCONDITIONER_H)
 #define AIRCONDITIONER_H
 
-#include "../electricDevices.h"
+#include "electricDevices.h"
 
 // Derived class for a specific type of device
 class AirConditioner : public ElectricDevice {

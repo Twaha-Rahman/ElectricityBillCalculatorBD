@@ -1,16 +1,14 @@
 #include "customDevice.h"
+#include <string>
 
-CustomDevice::CustomDevice(string name, double power, double time)
-    : ElectricDevice(name, power, time), deviceNumber{++deviceCount} {}
+CustomDevice::CustomDevice(string name, int instanceCount, int ID, double power,
+                           double time)
+    : ElectricDevice(name, power, time), deviceID(ID),
+      deviceCount(instanceCount) {}
 
-string CustomDevice::getDeviceName() const {
-  if (deviceCount == 1) {
-    return deviceName;
-  }
-
-  string devName{deviceName + " " + to_string(deviceNumber)};
-
+string CustomDevice::getDeviceName() const { return deviceName; }
+string CustomDevice::getDeviceNameWithCount() const {
+  string devName{deviceName + " " + to_string(deviceCount)};
   return devName;
 }
-
-int CustomDevice::deviceCount = 0;
+int CustomDevice::getInstanceCount() const { return deviceCount; }
