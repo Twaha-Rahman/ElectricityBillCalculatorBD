@@ -3,6 +3,7 @@
 
 #include "colorizer.h"
 #include "devices/airConditioner.h"
+#include "devices/customDevice.h"
 #include "devices/lightBulb.h"
 #include "devices/refrigerator.h"
 #include "electricDevices.h"
@@ -142,28 +143,6 @@ public:
     flush(cout);
   }
 };
-
-// Derived class for user-defined devices
-class CustomDevice : public ElectricDevice {
-private:
-  static int deviceCount;
-  int deviceNumber;
-
-public:
-  CustomDevice(string name, double power, double time)
-      : ElectricDevice(name, power, time), deviceNumber{++deviceCount} {}
-
-  string getDeviceName() const {
-    if (deviceCount == 1) {
-      return deviceName;
-    }
-
-    string devName{deviceName + " " + to_string(deviceNumber)};
-
-    return devName;
-  }
-};
-int CustomDevice::deviceCount = 0;
 
 // Function to display the bill with a breakdown and bar chart
 
