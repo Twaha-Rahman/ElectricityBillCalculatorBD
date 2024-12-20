@@ -8,23 +8,53 @@ double ElectricDevice::calculateConsumption() const {
   return (wattage * usageTime) / 1000;
 }
 
-void ElectricDevice::printDetails() const {
-  printer.setRedText();
+void ElectricDevice::printDetails(int *instanceCount) const {
 
-  cout << getDeviceName() << "\n"
-       << "Power Rating: " << wattage << " W\n"
-       << "Usage Time: " << usageTime << " hours\n"
-       << "Consumption: " << calculateConsumption() << " kWh\n"
-       << endl;
+  string deviceName;
+  if (getDeviceId() == -1) {
+    deviceName = getDeviceName();
+  } else {
+    int insCount = instanceCount[getDeviceId()];
+    if (insCount > 1) {
+      deviceName = getDeviceName() + " " + to_string(getInstanceCount());
+    } else {
+      deviceName = getDeviceName();
+    }
+  }
+
+  printer.setGreenText();
+  cout << string(10, '=') << deviceName << string(10, '=') << "\n";
+  printer.reset();
+  cout << "Power Rating: " << wattage << " W\n"
+       << "Usage Time: " << usageTime << " hours\n";
+  cout << "Consumption: ";
+  printer.setRedText();
+  cout << calculateConsumption() << " kWh (Unit)\n" << endl;
+  printer.setRedText();
 
   printer.reset();
 }
 
-void ElectricDevice::saveDetails(ofstream &outFile) const {
-  outFile << getDeviceName() << "\n"
+void ElectricDevice::saveDetails(ofstream &outFile, int *instanceCount) const {
+
+  string deviceName;
+
+  if (getDeviceId() == -1) {
+    deviceName = getDeviceName();
+  } else {
+    int insCount = instanceCount[getDeviceId()];
+    if (insCount > 1) {
+      deviceName = getDeviceName() + " " + to_string(getInstanceCount());
+    } else {
+      deviceName = getDeviceName();
+    }
+  }
+
+  outFile << string(10, '=') << deviceName << string(10, '=') << "\n"
           << "Power Rating: " << wattage << " W\n"
           << "Usage Time: " << usageTime << " hours\n"
-          << "Consumption: " << calculateConsumption() << " kWh\n";
+          << "Consumption: " << calculateConsumption() << " kWh (Unit)\n"
+          << endl;
 }
 
 string ElectricDevice::getDeviceName() const {

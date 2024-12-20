@@ -20,8 +20,8 @@ public:
   ElectricDevice(string name, double power, double time);
 
   double calculateConsumption() const;
-  void printDetails() const;
-  void saveDetails(ofstream &outFile) const;
+  void printDetails(int *instanceCount) const;
+  void saveDetails(ofstream &outFile, int *instanceCount) const;
   virtual string getDeviceName() const;
   virtual int getInstanceCount() const;
   virtual int getDeviceId() const;

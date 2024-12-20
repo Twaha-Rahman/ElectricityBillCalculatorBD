@@ -112,7 +112,7 @@ public:
     // Print the device-by-device breakdown
     cout << "\nElectricity Consumption Breakdown:\n";
     for (const auto &device : elecDevices) {
-      device->printDetails();
+      device->printDetails(instanceCount);
     }
 
     // Print total consumption and cost
@@ -165,7 +165,8 @@ public:
 };
 
 // Function to save the bill to a file
-void saveBillToFile(const BillCalculator &bCalc, const string &filename) {
+void saveBillToFile(const BillCalculator &bCalc, const string &filename,
+                    int *instanceCount) {
   ofstream outFile(filename);
 
   if (outFile.is_open()) {
@@ -175,7 +176,7 @@ void saveBillToFile(const BillCalculator &bCalc, const string &filename) {
     outFile << "Electricity Consumption Breakdown:\n\n";
 
     for (const auto &device : bCalc.getDevices()) {
-      device->saveDetails(outFile);
+      device->saveDetails(outFile, instanceCount);
     }
     outFile << "Total Bill Summary\n";
     outFile << "Total Consumption: " << totalConsumption << " kWh (Unit)\n";
@@ -273,7 +274,7 @@ int main() {
       // Save bill to file
       cout << "Enter filename to save the bill: ";
       cin >> filename;
-      saveBillToFile(billCalc, filename);
+      saveBillToFile(billCalc, filename, instanceCount);
     } else if (choice == noOfDevices + 2) {
       // Exit
       for (auto &device : billCalc.getDevices()) {
