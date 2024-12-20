@@ -172,12 +172,12 @@ void saveBillToFile(const BillCalculator &bCalc, const string &filename) {
     double totalConsumption = bCalc.getUsedUnit();
     double totalCost = bCalc.getTotalBill();
 
-    outFile << "Electricity Consumption Breakdown:\n";
+    outFile << "Electricity Consumption Breakdown:\n\n";
 
     for (const auto &device : bCalc.getDevices()) {
       device->saveDetails(outFile);
     }
-    outFile << "\nTotal Bill Summary:\n";
+    outFile << "Total Bill Summary\n";
     outFile << "Total Consumption: " << totalConsumption << " kWh (Unit)\n";
     outFile << "Total Cost: ৳" << fixed << setprecision(2) << totalCost
             << " Taka" << "\n";
@@ -191,10 +191,9 @@ void saveBillToFile(const BillCalculator &bCalc, const string &filename) {
 void calcLoopInstructions(vector<DeviceDetails *> &devList) {
   int i;
   cout << "\nSelect an operation:\n";
-  for (i = 0; i < devList.size(); i++) {
-    cout << i + 1 << ". Add " << devList[i]->name << endl;
+  for (i = 1; i < devList.size(); i++) {
+    cout << i << ". Add " << devList[i]->name << endl;
   }
-  i++;
 
   cout << i++ << ". Display Bill\n";
   cout << i++ << ". Save Bill to File\n";
@@ -224,14 +223,14 @@ int main() {
 
     bool isMatched = false;
 
-    for (int i = 1; i <= noOfDevices; i++) {
+    for (int i = 1; i < noOfDevices; i++) {
       if (choice == i) {
         // if the device has an wattage already provided, use that.
         // However, if its wattage is the sentinel -1, then get user input
-        if (deviceList[i - 1]->ratedWattage != -1) {
-          power = deviceList[i - 1]->ratedWattage;
+        if (deviceList[i]->ratedWattage != -1) {
+          power = deviceList[i]->ratedWattage;
         } else {
-          cout << "Enter power rating of the" << deviceList[i - 1]->name
+          cout << "Enter power rating of the " << deviceList[i]->name
                << " in watts (W): ";
           cin >> power;
         }
@@ -239,7 +238,7 @@ int main() {
         cout << "Enter usage time in hours: ";
         cin >> time;
 
-        switch (deviceList[i - 1]->deviceID) {
+        switch (deviceList[i]->deviceID) {
         case 1:
           billCalc.addDevice(new LightBulb(power, time));
           break;
@@ -250,10 +249,9 @@ int main() {
           billCalc.addDevice(new Refrigerator(power, time));
           break;
         default:
-          billCalc.addDevice(
-              new CustomDevice(deviceList[i - 1]->name,
-                               ++instanceCount[deviceList[i - 1]->deviceID],
-                               deviceList[i - 1]->deviceID, power, time));
+          billCalc.addDevice(new CustomDevice(
+              deviceList[i]->name, ++instanceCount[deviceList[i]->deviceID],
+              deviceList[i]->deviceID, power, time));
           break;
         }
 
@@ -265,18 +263,18 @@ int main() {
       continue;
     }
 
-    if (choice == noOfDevices + 1) {
+    if (choice == noOfDevices) {
       // Display the bill
       billCalc.calcUsedUnit();
       billCalc.calcBill();
 
       billCalc.displayBillInfo(instanceCount);
-    } else if (choice == noOfDevices + 2) {
+    } else if (choice == noOfDevices + 1) {
       // Save bill to file
       cout << "Enter filename to save the bill: ";
       cin >> filename;
       saveBillToFile(billCalc, filename);
-    } else if (choice == noOfDevices + 3) {
+    } else if (choice == noOfDevices + 2) {
       // Exit
       for (auto &device : billCalc.getDevices()) {
         delete device;

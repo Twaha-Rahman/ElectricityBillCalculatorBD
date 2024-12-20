@@ -39,15 +39,15 @@ vector<DeviceDetails *> getAvailableDevices() {
   DeviceDetails *ac = new DeviceDetails{"Air Conditioner", 2, -1.0};
   DeviceDetails *ref = new DeviceDetails{"Refrigerator", 3, -1.0};
 
-  vector<DeviceDetails *> devices{lb, ac, ref};
+  vector<DeviceDetails *> devices{NULL, lb, ac, ref};
   readSavedDevices(devices);
 
   return devices;
 }
 
 void showAvailableDevices(vector<DeviceDetails *> &devices) {
-  for (const auto &dev : devices) {
-    cout << dev->name << endl;
+  for (int i = 1; i < devices.size(); i++) {
+    cout << devices[i]->name << endl;
   }
 }
 
