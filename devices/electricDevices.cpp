@@ -24,8 +24,7 @@ void ElectricDevice::saveDetails(ofstream &outFile) const {
   outFile << getDeviceName() << "\n"
           << "Power Rating: " << wattage << " W\n"
           << "Usage Time: " << usageTime << " hours\n"
-          << "Consumption: " << calculateConsumption() << " kWh\n"
-          << "\n\n";
+          << "Consumption: " << calculateConsumption() << " kWh\n";
 }
 
 string ElectricDevice::getDeviceName() const {

@@ -283,7 +283,7 @@ int main() {
       cout << "Exiting... Goodbye!\n";
       exit(0);
     } else {
-      cout << "Invalid input! Please try again..." << endl << endl;
+      cout << "Invalid input! Please try again...\n" << endl;
     }
   }
 
