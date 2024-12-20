@@ -27,8 +27,8 @@ g++ project.cpp colorizer.cpp deviceInitLoop.cpp devices/*.cpp -o app
 
 This will compile and link the source files into the the program named _app_.
 
-This example assumes you're running it on Unix based OSs. I'm not used
-developing in Windows. Feel free to do a PR if you know though because I'm
+This example assumes you're running it on Unix based OSs. I'm not used to
+developing on Windows. Feel free to do a PR if you know though... because I'm
 feeling lazy ;)
 
 # Contributing
