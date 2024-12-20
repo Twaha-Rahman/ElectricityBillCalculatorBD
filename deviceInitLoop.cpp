@@ -1,7 +1,9 @@
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -39,7 +41,6 @@ void readSavedDevices(vector<DeviceDetails *> &deviceList) {
     fp.seekg(0, ios::end);
     int endpos = fp.tellg();
     int n = endpos / sizeof(DeviceDetails);
-    cout << "Found " << n << " devices stored in disk..." << endl;
     fp.seekg(0);
     for (int i = 0; i < n; i++) {
       DeviceDetails *rdd = new DeviceDetails;
@@ -47,7 +48,6 @@ void readSavedDevices(vector<DeviceDetails *> &deviceList) {
 
       if ((rdd->deviceID == 1) || (rdd->deviceID == 2) ||
           (rdd->deviceID == 3)) {
-        cout << "Read: " << rdd->name << endl;
         deviceList[rdd->deviceID] = rdd;
       } else {
         deviceList.push_back(rdd);
@@ -71,7 +71,13 @@ vector<DeviceDetails *> getAvailableDevices() {
 
 void showAvailableDevices(vector<DeviceDetails *> &deviceList) {
   for (int i = 1; i < deviceList.size(); i++) {
-    cout << deviceList[i]->name << endl;
+    cout << std::fixed << setprecision(2) << deviceList[i]->name << " (";
+    if (deviceList[i]->ratedWattage == -1) {
+      cout << "Unspecified";
+    } else {
+      cout << deviceList[i]->ratedWattage;
+    }
+    cout << " Watt)" << endl;
   }
 }
 
