@@ -25,6 +25,7 @@ private:
 
 public:
   DevicesInit();
+  ~DevicesInit();
 
   std::vector<DeviceDetails *> inputLoop();
 };

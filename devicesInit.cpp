@@ -23,6 +23,12 @@ DevicesInit::DevicesInit() {
   readSavedDevices();
 }
 
+DevicesInit::~DevicesInit() {
+  for (int i = 1; i < deviceList.size(); i++) {
+    delete deviceList[i];
+  }
+}
+
 bool DevicesInit::saveConfiguredDevices() {
   fstream wfp;
   wfp.open("devices.dat", ios::binary | ios::out);
