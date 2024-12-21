@@ -22,7 +22,7 @@ Just use a C++ compiler to compile the following files:
 If you're using `g++`, you'd need to run the following command:
 
 ```sh
-g++ project.cpp colorizer.cpp deviceInitLoop.cpp devices/*.cpp -o app
+g++ project.cpp colorizer.cpp devicesInit.cpp devices/*.cpp -o app
 ```
 
 This will compile and link the source files into the the program named _app_.

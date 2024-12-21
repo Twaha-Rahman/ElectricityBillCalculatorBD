@@ -4,12 +4,12 @@
 #include <vector>
 
 #include "colorizer.h"
-#include "deviceInitLoop.h"
 #include "devices/airConditioner.h"
 #include "devices/customDevice.h"
 #include "devices/electricDevices.h"
 #include "devices/lightBulb.h"
 #include "devices/refrigerator.h"
+#include "devicesInit.h"
 
 using namespace std;
 
@@ -203,9 +203,11 @@ void calcLoopInstructions(vector<DeviceDetails *> &devList) {
 }
 
 int main() {
-
-  vector<DeviceDetails *> deviceList = deviceInitLoop::inputLoop();
+  DevicesInit devInit;
+  vector<DeviceDetails *> deviceList = devInit.inputLoop();
   int noOfDevices = deviceList.size();
+
+  cout << "We have " << noOfDevices - 1 << " devices in the list!" << endl;
 
   BillCalculator billCalc;
   int choice;

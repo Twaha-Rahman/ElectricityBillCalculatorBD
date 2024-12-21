@@ -7,13 +7,23 @@
 #include <iostream>
 #include <vector>
 
-#include "deviceInitLoop.h"
+#include "devicesInit.h"
 
 using namespace std;
 
-namespace deviceInitLoop {
+DevicesInit::DevicesInit() {
+  DeviceDetails *lb = new DeviceDetails{"Light Bulb", 1, -1.0};
+  DeviceDetails *ac = new DeviceDetails{"Air Conditioner", 2, -1.0};
+  DeviceDetails *ref = new DeviceDetails{"Refrigerator", 3, -1.0};
 
-bool saveConfiguredDevices(vector<DeviceDetails *> &deviceList) {
+  deviceList.push_back(NULL);
+  deviceList.push_back(lb);
+  deviceList.push_back(ac);
+  deviceList.push_back(ref);
+  readSavedDevices();
+}
+
+bool DevicesInit::saveConfiguredDevices() {
   fstream wfp;
   wfp.open("devices.dat", ios::binary | ios::out);
   // we start the loop from the 1st index because there is no 0 indexed device
@@ -33,7 +43,7 @@ bool saveConfiguredDevices(vector<DeviceDetails *> &deviceList) {
   }
 }
 
-void readSavedDevices(vector<DeviceDetails *> &deviceList) {
+void DevicesInit::readSavedDevices() {
   fstream fp;
   fp.open("devices.dat", ios::binary | ios::in | ios::out);
 
@@ -48,6 +58,7 @@ void readSavedDevices(vector<DeviceDetails *> &deviceList) {
 
       if ((rdd->deviceID == 1) || (rdd->deviceID == 2) ||
           (rdd->deviceID == 3)) {
+        delete deviceList[rdd->deviceID];
         deviceList[rdd->deviceID] = rdd;
       } else {
         deviceList.push_back(rdd);
@@ -57,19 +68,7 @@ void readSavedDevices(vector<DeviceDetails *> &deviceList) {
   fp.close();
 }
 
-vector<DeviceDetails *> getAvailableDevices() {
-
-  DeviceDetails *lb = new DeviceDetails{"Light Bulb", 1, -1.0};
-  DeviceDetails *ac = new DeviceDetails{"Air Conditioner", 2, -1.0};
-  DeviceDetails *ref = new DeviceDetails{"Refrigerator", 3, -1.0};
-
-  vector<DeviceDetails *> devices{NULL, lb, ac, ref};
-  readSavedDevices(devices);
-
-  return devices;
-}
-
-void showAvailableDevices(vector<DeviceDetails *> &deviceList) {
+void DevicesInit::showAvailableDevices() {
   for (int i = 1; i < deviceList.size(); i++) {
     cout << std::fixed << setprecision(2) << deviceList[i]->name << " (";
     if (deviceList[i]->ratedWattage == -1) {
@@ -81,9 +80,9 @@ void showAvailableDevices(vector<DeviceDetails *> &deviceList) {
   }
 }
 
-void printMenu(vector<DeviceDetails *> &deviceList) {
+void DevicesInit::printMenu() {
   cout << "Available devices: " << endl;
-  showAvailableDevices(deviceList);
+  showAvailableDevices();
 
   cout << "\nSelect operation: \n"
        << "1) Continue with these devices (with these configurations)\n"
@@ -93,8 +92,9 @@ void printMenu(vector<DeviceDetails *> &deviceList) {
        << "5) Exit the program" << endl;
 }
 
-void modifyDeviceOption(vector<DeviceDetails *> &deviceList) {
-  cout << "\nWhich device's info would you like to modify?\nSelect a device:\n";
+void DevicesInit::modifyDeviceOption() {
+  cout << "\nWhich device's info would you like to modify?\nSelect a "
+          "device:\n";
   for (int i = 1; i < deviceList.size(); i++) {
     cout << i << ") " << deviceList[i]->name << '\n';
   }
@@ -159,7 +159,7 @@ void modifyDeviceOption(vector<DeviceDetails *> &deviceList) {
   }
 }
 
-void addCustomDeviceOption(vector<DeviceDetails *> &deviceList) {
+void DevicesInit::addCustomDeviceOption() {
   DeviceDetails *newDevice = new DeviceDetails;
 
   cout << "Enter device name: ";
@@ -176,7 +176,7 @@ void addCustomDeviceOption(vector<DeviceDetails *> &deviceList) {
   deviceList.push_back(newDevice);
 }
 
-void deleteDeviceOption(vector<DeviceDetails *> &deviceList) {
+void DevicesInit::deleteDeviceOption() {
   cout << "\nWhich device would you like to delete?\nSelect a device:\n";
   for (int i = 1; i < deviceList.size(); i++) {
     cout << i << ") " << deviceList[i]->name << '\n';
@@ -201,30 +201,37 @@ void deleteDeviceOption(vector<DeviceDetails *> &deviceList) {
   cout << "Device deleted successfully!" << endl;
 }
 
-vector<DeviceDetails *> inputLoop() {
+vector<DeviceDetails *> DevicesInit::inputLoop() {
   int c;
-  vector<DeviceDetails *> deviceList = getAvailableDevices();
-
   do {
-    printMenu(deviceList);
+    printMenu();
     cout << "Enter your choice: ";
     cin >> c;
 
     if (c == 1) {
       // saves the configured devices to disk
-      saveConfiguredDevices(deviceList);
+      bool isSavedSuccessfully = saveConfiguredDevices();
+
+      if (isSavedSuccessfully) {
+        cout << "\nSuccessfully written the device informations to disk!"
+             << endl;
+      } else {
+        cerr << "\nFailed to write the device informations to disk. (This is "
+                "not a fatal error and can be ignored)"
+             << endl;
+      }
 
       // finishes the device initialization and sends the array of available
-      // device list indexed by their device IDs (since the device ID starts at
-      // 1, the 0-th index is kept empty using a NULL pointer) back to the
+      // device list indexed by their device IDs (since the device ID starts
+      // at 1, the 0-th index is kept empty using a NULL pointer) back to the
       // caller.
       return deviceList;
     } else if (c == 2) {
-      addCustomDeviceOption(deviceList);
+      addCustomDeviceOption();
     } else if (c == 3) {
-      modifyDeviceOption(deviceList);
+      modifyDeviceOption();
     } else if (c == 4) {
-      deleteDeviceOption(deviceList);
+      deleteDeviceOption();
     } else if (c == 5) {
       cout << "Exiting program..." << endl;
       exit(0);
@@ -234,4 +241,3 @@ vector<DeviceDetails *> inputLoop() {
 
   } while (true);
 }
-} // namespace deviceInitLoop
