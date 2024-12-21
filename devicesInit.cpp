@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "devicesInit.h"
+#include "safeInput.h"
 
 using namespace std;
 
@@ -107,13 +108,9 @@ void DevicesInit::modifyDeviceOption() {
   cout << "Enter your choice: ";
   fflush(stdout);
 
-  int c;
-  cin >> c;
-
-  if ((c < 1) || (c > deviceList.size())) {
-    cerr << "Invalid option selected! Please try again.\n" << endl;
-    return;
-  }
+  int c = SafeInput::getNumberBetween(
+      1, deviceList.size() - 1,
+      "Invalid input! Please try again.\nEnter your choice: ");
 
   DeviceDetails *device = deviceList[c];
   string wattageStr;
@@ -133,14 +130,14 @@ void DevicesInit::modifyDeviceOption() {
        << "2) Change device wattage\n"
        << "Enter your choice: ";
   fflush(stdout);
-  cin >> c;
+  c = SafeInput::getNumberBetween(
+      1, 2, "Invalid input! Please try again.\nEnter your choice: ");
 
   while (true) {
     if (c == 1) {
       char newDeviceName[180];
       cout << "Enter new name for the device: ";
-      cin.clear();
-      cin.ignore(1000, '\n');
+      SafeInput::clearInputBuffer();
       cin.get(newDeviceName, 180);
 
       strcpy(device->name, newDeviceName);
@@ -151,12 +148,20 @@ void DevicesInit::modifyDeviceOption() {
     } else if (c == 2) {
       int newDeviceWattage;
       cout << "Enter new wattage for the device: ";
-      cin >> newDeviceWattage;
+      newDeviceWattage = SafeInput::getPositiveNumberAllowingSentinel(
+          "Invalid wattage entered! Please enter a wattage that's greater than "
+          "zero.\nEnter new wattage for the device: ");
 
       device->ratedWattage = newDeviceWattage;
 
-      cout << "The wattage of the device was changed to "
-           << device->ratedWattage << '.' << endl;
+      string wattageStr;
+      if (device->ratedWattage == -1) {
+        wattageStr = "<<Unspecified>>";
+      } else {
+        wattageStr = to_string(device->ratedWattage);
+      }
+
+      cout << "The wattage of the device was changed to " << wattageStr << endl;
       break;
     } else {
       cout << "Invalid option selected! Please try again." << endl;
@@ -169,14 +174,15 @@ void DevicesInit::addCustomDeviceOption() {
   DeviceDetails *newDevice = new DeviceDetails;
 
   cout << "Enter device name: ";
-  cin.clear();
-  cin.ignore(1000, '\n');
+  SafeInput::clearInputBuffer();
   cin.get(newDevice->name, 180);
   cout << "Would you like to specify the device wattage? If yes, enter the "
           "device wattage. If not, then enter -1."
        << endl;
   cout << "Enter device wattage: ";
-  cin >> newDevice->ratedWattage;
+  newDevice->ratedWattage = SafeInput::getPositiveNumberAllowingSentinel(
+      "Invalid wattage entered! Please enter a wattage that's greater than "
+      "zero.\nEnter device wattage: ");
   newDevice->deviceID = deviceList.size();
 
   deviceList.push_back(newDevice);
@@ -191,12 +197,9 @@ void DevicesInit::deleteDeviceOption() {
   fflush(stdout);
 
   int c;
-  cin >> c;
-
-  if ((c < 1) || (c > deviceList.size())) {
-    cerr << "Invalid option selected! Please try again.\n" << endl;
-    return;
-  }
+  c = SafeInput::getNumberBetween(
+      1, deviceList.size() - 1,
+      "Invalid option selected! Please try again.\nEnter your choice: ");
 
   delete deviceList[c];
   for (int i = c; i < deviceList.size() - 1; i++) {

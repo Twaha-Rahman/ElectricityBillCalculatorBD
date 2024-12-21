@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstring>
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -10,6 +11,7 @@
 #include "devices/lightBulb.h"
 #include "devices/refrigerator.h"
 #include "devicesInit.h"
+#include "safeInput.h"
 
 using namespace std;
 
@@ -235,11 +237,17 @@ int main() {
         } else {
           cout << "Enter power rating of the " << deviceList[i]->name
                << " in watts (W): ";
-          cin >> power;
+          power = SafeInput::getPositiveNumber(
+              "Invalid input! Please enter a number that's greater than zero "
+              "for the power rating of the device.\nEnter the device power "
+              "rating in watts (W): ");
         }
 
         cout << "Enter usage time in hours: ";
-        cin >> time;
+        time = SafeInput::getPositiveNumber(
+            "Invalid input! Please enter a number "
+            "that's greater than zero for the usage "
+            "time.\nEnter usage time in hours: ");
 
         switch (deviceList[i]->deviceID) {
         case 1:
@@ -274,9 +282,13 @@ int main() {
       billCalc.displayBillInfo(instanceCount);
     } else if (choice == noOfDevices + 1) {
       // Save bill to file
-      cout << "Enter filename to save the bill: ";
-      cin >> filename;
-      saveBillToFile(billCalc, filename, instanceCount);
+      cout << "Enter a filename where the bill will be saved. Filename can "
+              "only consist of alphanumeric characters)\n"
+           << "Enter filename to save the bill: ";
+      filename = SafeInput::getValidFilename(
+          "Invalid input! Please enter a valid filename that consists of "
+          "alphanumeric characters.\nEnter filename: ");
+      saveBillToFile(billCalc, filename + ".txt", instanceCount);
     } else if (choice == noOfDevices + 2) {
       // Exit
       for (auto &device : billCalc.getDevices()) {
