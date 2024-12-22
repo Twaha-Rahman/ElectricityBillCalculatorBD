@@ -222,8 +222,10 @@ vector<DeviceDetails *> DevicesInit::inputLoop() {
       bool isSavedSuccessfully = saveConfiguredDevices();
 
       if (isSavedSuccessfully) {
-        cout << "\nSuccessfully written the device informations to disk!"
-             << endl;
+        cout
+            << "\nSuccessfully written the device informations to disk!\nThese "
+               "device informations will be automatically loaded in future use."
+            << endl;
       } else {
         cerr << "\nFailed to write the device informations to disk. (This is "
                 "not a fatal error and can be ignored)"
@@ -237,10 +239,13 @@ vector<DeviceDetails *> DevicesInit::inputLoop() {
       return deviceList;
     } else if (c == 2) {
       addCustomDeviceOption();
+      saveConfiguredDevices();
     } else if (c == 3) {
       modifyDeviceOption();
+      saveConfiguredDevices();
     } else if (c == 4) {
       deleteDeviceOption();
+      saveConfiguredDevices();
     } else if (c == 5) {
       cout << "Exiting program..." << endl;
       exit(0);
