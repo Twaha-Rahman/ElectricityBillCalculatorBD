@@ -58,8 +58,6 @@ int main() {
   vector<DeviceDetails *> deviceList = devInit.inputLoop();
   int noOfDevices = deviceList.size();
 
-  cout << "We have " << noOfDevices - 1 << " devices in the list!" << endl;
-
   BillCalculator billCalc;
   int choice;
   double power, time;
