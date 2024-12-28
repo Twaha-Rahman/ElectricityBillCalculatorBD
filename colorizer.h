@@ -29,17 +29,6 @@ protected:
     White = 37
   };
 
-  enum ansiBackgroundColorCodes {
-    bgBlack = 30,
-    bgRed,
-    bgGreen,
-    bgYellow,
-    bgBlue,
-    bgPurple,
-    bgCyan,
-    bgWhite
-  };
-
 public:
   Colorizer();
   Colorizer(string colorToSet);
