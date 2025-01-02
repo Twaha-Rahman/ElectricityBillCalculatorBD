@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "billCalculator.h"
+#include "colorizer.h"
 #include "devices/airConditioner.h"
 #include "devices/customDevice.h"
 #include "devices/electricDevices.h"
@@ -41,6 +42,7 @@ void saveBillToFile(const BillCalculator &bCalc, const string &filename,
 }
 
 void calcLoopInstructions(vector<DeviceDetails *> &devList) {
+  Colorizer colorizer;
   int i;
   cout << "\nSelect an operation:\n";
   for (i = 1; i < devList.size(); i++) {
@@ -50,7 +52,9 @@ void calcLoopInstructions(vector<DeviceDetails *> &devList) {
   cout << i++ << ". Display Bill\n";
   cout << i++ << ". Save Bill to File\n";
   cout << i++ << ". Exit\n";
+  colorizer.setBlueText();
   cout << "Enter your choice: ";
+  colorizer.reset();
 }
 
 int main() {
@@ -71,6 +75,7 @@ int main() {
 
   while (true) {
     calcLoopInstructions(deviceList);
+    Colorizer colorizer;
     cin >> choice;
 
     bool isMatched = false;
@@ -82,15 +87,21 @@ int main() {
         if (deviceList[i]->ratedWattage != -1) {
           power = deviceList[i]->ratedWattage;
         } else {
+          colorizer.setBlueText();
           cout << "Enter power rating of the " << deviceList[i]->name
                << " in watts (W): ";
+          colorizer.reset();
+
           power = SafeInput::getPositiveNumber(
               "Invalid input! Please enter a number that's greater than zero "
               "for the power rating of the device.\nEnter the device power "
               "rating in watts (W): ");
         }
 
+        colorizer.setBlueText();
         cout << "Enter usage time in hours: ";
+        colorizer.reset();
+
         time = SafeInput::getPositiveNumber(
             "Invalid input! Please enter a number "
             "that's greater than zero for the usage "
@@ -129,9 +140,15 @@ int main() {
       billCalc.displayBillInfo(instanceCount);
     } else if (choice == noOfDevices + 1) {
       // Save bill to file
+      colorizer.setYellowText();
       cout << "Enter a filename where the bill will be saved. Filename can "
-              "only consist of alphanumeric characters)\n"
-           << "Enter filename to save the bill: ";
+              "only consist of alphanumeric characters)\n";
+      colorizer.reset();
+
+      colorizer.setBlueText();
+      cout << "Enter filename: ";
+      colorizer.reset();
+
       filename = SafeInput::getValidFilename(
           "Invalid input! Please enter a valid filename that consists of "
           "alphanumeric characters.\nEnter filename: ");
@@ -142,7 +159,10 @@ int main() {
         delete device;
       }
 
-      cout << "Exiting... Goodbye!\n";
+      colorizer.setYellowText();
+      cout << "\nExiting... Goodbye!\n";
+      colorizer.reset();
+
       exit(0);
     } else {
       cout << "Invalid input! Please try again...\n" << endl;

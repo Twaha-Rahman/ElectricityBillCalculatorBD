@@ -99,8 +99,10 @@ void BillCalculator::displayBillInfo(int *instanceCount) {
 
   // Print total consumption and cost
   cout << "\nTotal Consumption: " << unitUsed << " kWh\n";
-  cout << "Total Cost: ৳" << fixed << setprecision(2) << totalCost << " Taka"
-       << endl;
+  cout << "Total cost for a day: ৳ " << fixed << setprecision(2) << totalCost
+       << " Taka" << endl;
+  cout << "Total cost for a month: ৳ " << fixed << setprecision(2)
+       << totalCost * 30 << " Taka" << endl;
 
   // Display percentage-based breakdown and bar chart
   cout << "\nDevice-wise Percentage and Power Consumption Bar Chart:\n";

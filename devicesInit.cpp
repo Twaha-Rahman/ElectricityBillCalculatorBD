@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 
+#include "colorizer.h"
 #include "devicesInit.h"
 #include "safeInput.h"
 
@@ -88,11 +89,15 @@ void DevicesInit::showAvailableDevices() {
 }
 
 void DevicesInit::printMenu() {
+  Colorizer colorizer;
   cout << "Available devices: " << endl;
   showAvailableDevices();
 
-  cout << "\nSelect operation: \n"
-       << "1) Continue with these devices (with these configurations)\n"
+  colorizer.setGreenText();
+  cout << "\nSelect operation: \n";
+  colorizer.reset();
+
+  cout << "1) Continue with these devices (with these configurations)\n"
        << "2) Add custom device\n"
        << "3) Modify device details\n"
        << "4) Delete device\n"
