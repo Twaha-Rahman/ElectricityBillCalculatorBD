@@ -18,15 +18,15 @@ device then calculates the total bill per day and per month based on
 
 # Compilation
 
-If you have GNU `make` installed, building the project and running it is as
-simple as running:
+If you have [GNU `make`](https://www.gnu.org/software/make/) installed, building
+the project and running it is as simple as running:
 
 ```shell
 make run
 ```
 
-If you don't have GNU `make`, then just use a C++ compiler to compile all the
-C++ source files.
+If you don't have [GNU `make`](https://www.gnu.org/software/make/), then just
+use a C++ compiler to compile all the C++ source files.
 
 If you're using `g++`, you'd need to run the following command to compile the
 project:
@@ -35,10 +35,16 @@ project:
 g++ *.cpp devices/*.cpp -o app
 ```
 
-Then, to run the build binary, run:
+Then, to run the built binary in Unix based operating systems run the following:
 
 ```shell
 ./a.out
+```
+
+To run the built binary in Windows, run the following:
+
+```shell
+.\a.exe
 ```
 
 This example assumes you're running it on Unix based OSs. Instructions for
